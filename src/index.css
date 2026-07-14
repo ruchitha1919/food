@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Libre Caslon Text", Georgia, serif;
+  --font-sans: "Work Sans", system-ui, -apple-system, sans-serif;
+
+  --color-primary: #600108;
+  --color-primary-container: #801b1b;
+  --color-secondary: #735c00;
+  --color-secondary-container: #fed65b;
+  --color-background: #fff8f5;
+  --color-surface: #fff8f5;
+  --color-surface-dim: #e1d8d4;
+  --color-surface-variant: #e9e1dc;
+  --color-surface-container-low: #fbf2ed;
+  --color-surface-container: #f5ece7;
+  --color-surface-container-high: #efe6e2;
+  --color-surface-container-highest: #e9e1dc;
+  --color-on-background: #1e1b18;
+  --color-on-surface: #1e1b18;
+  --color-on-surface-variant: #57413f;
+  --color-outline: #8b716f;
+  --color-outline-variant: #debfbc;
+  --color-accent-gold: #ffe088;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-on-background);
+    font-family: var(--font-sans);
+  }
+}
+
+.hero-gradient {
+  background: linear-gradient(to bottom, rgba(30, 27, 24, 0.4), rgba(30, 27, 24, 0.8));
+}
+
+.floral-pattern {
+  background-image: radial-gradient(#8b716f 0.5px, transparent 0.5px);
+  background-size: 20px 20px;
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Syamala Dry Fruits",
+  "description": "Syamala dry fruits premium storefront with interactive bespoke gifting, custom calligraphy greetings, real-time express order tracking, and live concierge.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
