@@ -677,11 +677,11 @@ export default function App() {
             <div className="space-y-4 col-span-2">
               <h4 className="font-serif text-base font-bold text-accent-gold tracking-wide">Visit Our Flagship</h4>
               <p className="text-white/85 font-sans text-xs leading-relaxed">
-                Flagship Store: Liberty Road, Opp TTD Temple,
+                Flagship Store: MVP Sector 3, Sector 3, MVP Colony,
                 <br />
-                Himayatnagar, Hyderabad, Telangana - 500029
+                Visakhapatnam, Andhra Pradesh - 530017
                 <br />
-                Phone: +91 9959334007 | Email: sales@syamala.co.in
+                Email: sales@syamala.co.in
               </p>
 
 
@@ -851,7 +851,7 @@ export default function App() {
               </div>
 
               <div className="text-[10px] text-on-surface-variant font-medium font-sans">
-                Flagship Store: Liberty Road, Opp TTD Temple, Himayatnagar, Hyderabad.
+                Flagship Store: MVP Sector 3, Sector 3, MVP Colony, Visakhapatnam, Andhra Pradesh.
                 <br />
                 Established 1993.
               </div>
