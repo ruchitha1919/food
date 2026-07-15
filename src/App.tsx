@@ -35,7 +35,6 @@ import CheckoutModal from './components/CheckoutModal';
 import GiftingCustomizer from './components/GiftingCustomizer';
 import SearchModal from './components/SearchModal';
 import AccountModal from './components/AccountModal';
-import SupportChat from './components/SupportChat';
 import AdminDashboardModal from './components/AdminDashboardModal';
 
 export default function App() {
@@ -48,7 +47,6 @@ export default function App() {
   const [isGiftingOpen, setIsGiftingOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
@@ -240,23 +238,12 @@ export default function App() {
 
   return (
     <div className="bg-background text-on-background min-h-screen relative flex flex-col font-sans selection:bg-primary/20 selection:text-primary">
-      {/* 1. Announcement Bar */}
-      <div className="bg-primary text-white py-2 px-4 text-center text-[11px] font-bold tracking-widest uppercase z-[60] relative">
-        Free Shipping Pan India Above 999/-{' '}
-        <button
-          onClick={() => handleCategoryCardClick('all')}
-          className="font-bold border-b border-white hover:text-accent-gold hover:border-accent-gold transition-colors inline-flex items-center gap-1 cursor-pointer"
-        >
-          ORDER NOW! <ArrowRight className="w-3 h-3" />
-        </button>
-      </div>
-
       {/* 2. Top App Bar / Header */}
       <header
-        className={`fixed left-0 right-0 z-50 grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-12 transition-all duration-300 border-b ${
+        className={`fixed left-0 right-0 z-50 grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-12 transition-all duration-300 border-b top-0 ${
           scrolled
-            ? 'top-0 h-14 bg-surface/85 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-outline-variant/60'
-            : 'top-8 h-16 bg-surface/70 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.02)] border-outline-variant/30'
+            ? 'h-14 bg-surface/85 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-outline-variant/60'
+            : 'h-16 bg-surface/70 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.02)] border-outline-variant/30'
         }`}
         id="app-header"
       >
@@ -683,7 +670,7 @@ export default function App() {
                 <button onClick={() => setIsAccountOpen(true)} className="text-left hover:text-accent-gold transition-colors cursor-pointer">
                   Tracking & Delivery
                 </button>
-                <button onClick={() => setIsChatOpen(true)} className="text-left hover:text-accent-gold transition-colors cursor-pointer">
+                <button onClick={() => window.open('https://wa.me/919959334007', '_blank')} className="text-left hover:text-accent-gold transition-colors cursor-pointer">
                   Connect With Scribe
                 </button>
                 <button onClick={() => setIsAdminOpen(true)} className="text-left hover:text-accent-gold transition-colors cursor-pointer font-bold text-accent-gold/90 flex items-center gap-1">
@@ -704,7 +691,7 @@ export default function App() {
               </p>
 
               <div className="flex gap-4.5 pt-3 text-white/80">
-                <span className="text-xs uppercase font-sans font-bold tracking-wider hover:text-accent-gold cursor-pointer transition-colors" onClick={() => setIsChatOpen(true)}>
+                <span className="text-xs uppercase font-sans font-bold tracking-wider hover:text-accent-gold cursor-pointer transition-colors" onClick={() => window.open('https://wa.me/919959334007', '_blank')}>
                   [ WHATSAPP SUPPORT ]
                 </span>
                 <span className="text-xs uppercase font-sans font-bold tracking-wider hover:text-accent-gold cursor-pointer transition-colors" onClick={() => setIsAccountOpen(true)}>
@@ -756,21 +743,7 @@ export default function App() {
         </button>
       </nav>
 
-      {/* 11. Floating WhatsApp Support Trigger */}
-      <button
-        onClick={() => setIsChatOpen((o) => !o)}
-        className="fixed bottom-24 md:bottom-8 right-6 bg-[#25D366] text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center z-50 hover:scale-110 active:scale-95 transition-all cursor-pointer"
-        title="Live Concierge Support"
-        id="whatsapp-chat-fab"
-      >
-        <svg
-          className="w-7 h-7 text-white fill-white"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.455L0 24zm6.59-4.846c1.665.988 3.3 1.488 5.352 1.489 5.525 0 10.018-4.494 10.021-10.02.002-2.678-1.03-5.195-2.905-7.072-1.876-1.877-4.393-2.906-7.071-2.907-5.53 0-10.024 4.496-10.027 10.02-.001 2.031.529 3.633 1.486 5.206l-.991 3.616 3.73-.978l-.005-.006zm12.385-7.391c-.244-.122-1.442-.712-1.666-.793-.223-.082-.387-.122-.55.122-.163.244-.63.793-.772.956-.142.162-.284.183-.528.061-.244-.122-1.03-.38-1.961-1.21-.723-.645-1.212-1.443-1.353-1.687-.142-.244-.015-.376.107-.497.11-.11.244-.285.366-.427.122-.142.163-.244.244-.407.081-.163.04-.305-.02-.427-.061-.122-.55-1.32-.752-1.81-.197-.475-.397-.411-.55-.419-.142-.007-.305-.008-.468-.008-.163 0-.427.061-.65.305-.224.244-.854.834-.854 2.031 0 1.197.874 2.35 1.993 2.502.122.015 3.4 5.195 8.238 7.28 1.15.497 2.049.794 2.748.142.702-.652.749-1.567.749-2.155 0-.081-.04-.163-.122-.204z" />
-        </svg>
-      </button>
+
 
       {/* 12. Modals & Side Drawers */}
       <AnimatePresence>
@@ -782,7 +755,6 @@ export default function App() {
             cartItems={cartItems}
             onUpdateQuantity={handleUpdateCartQty}
             onRemoveItem={handleRemoveFromCart}
-            onCheckout={handleProceedToCheckout}
           />
         )}
 
@@ -824,13 +796,6 @@ export default function App() {
           />
         )}
 
-        {/* Support Chat Overlay */}
-        {isChatOpen && (
-          <SupportChat
-            isOpen={isChatOpen}
-            onClose={() => setIsChatOpen(false)}
-          />
-        )}
 
         {/* Product Details Modal */}
         {selectedProduct && (
@@ -912,7 +877,7 @@ export default function App() {
                   <button
                     onClick={() => {
                       setIsMenuOpen(false);
-                      setIsChatOpen(true);
+                      window.open('https://wa.me/919959334007', '_blank');
                     }}
                     className="text-left py-1.5 border-b border-outline-variant/30 flex items-center justify-between"
                   >

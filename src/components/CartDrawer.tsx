@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
-import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight, Tag } from 'lucide-react';
+import { X, ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react';
 import { CartItem } from '../types';
 
 interface CartDrawerProps {
@@ -14,7 +14,6 @@ interface CartDrawerProps {
   cartItems: CartItem[];
   onUpdateQuantity: (itemId: string, newQty: number) => void;
   onRemoveItem: (itemId: string) => void;
-  onCheckout: () => void;
 }
 
 export default function CartDrawer({
@@ -22,34 +21,9 @@ export default function CartDrawer({
   onClose,
   cartItems,
   onUpdateQuantity,
-  onRemoveItem,
-  onCheckout
+  onRemoveItem
 }: CartDrawerProps) {
-  const [couponCode, setCouponCode] = useState('');
-  const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percent: number } | null>(null);
-  const [couponError, setCouponError] = useState('');
-
   const subtotal = cartItems.reduce((acc, item) => acc + item.selectedPrice * item.quantity, 0);
-  const discountAmount = appliedDiscount ? Math.round(subtotal * (appliedDiscount.percent / 100)) : 0;
-  const shippingThreshold = 999;
-  const shippingCost = subtotal >= shippingThreshold || subtotal === 0 ? 0 : 150;
-  const finalTotal = subtotal - discountAmount + shippingCost;
-  const freeShippingProgress = Math.min((subtotal / shippingThreshold) * 100, 100);
-
-  const handleApplyCoupon = (e: React.FormEvent) => {
-    e.preventDefault();
-    setCouponError('');
-    const code = couponCode.trim().toUpperCase();
-    if (code === 'WELCOME10') {
-      setAppliedDiscount({ code: 'WELCOME10', percent: 10 });
-      setCouponCode('');
-    } else if (code === 'SYAMALA20') {
-      setAppliedDiscount({ code: 'SYAMALA20', percent: 20 });
-      setCouponCode('');
-    } else {
-      setCouponError('Invalid coupon code. Try WELCOME10 or SYAMALA20');
-    }
-  };
 
   if (!isOpen) return null;
 
@@ -92,29 +66,7 @@ export default function CartDrawer({
             </button>
           </div>
 
-          {/* Shipping Progress */}
-          {cartItems.length > 0 && (
-            <div className="px-6 py-4 bg-surface-container-low border-b border-outline-variant">
-              <div className="flex justify-between items-center mb-1.5 text-xs font-sans">
-                {subtotal >= shippingThreshold ? (
-                  <span className="text-secondary font-semibold flex items-center gap-1">
-                    🎉 You have unlocked <strong>FREE Shipping!</strong>
-                  </span>
-                ) : (
-                  <span className="text-on-surface-variant">
-                    Add <strong className="text-primary">₹{shippingThreshold - subtotal}</strong> more for free shipping
-                  </span>
-                )}
-                <span className="text-on-surface-variant font-medium">{Math.round(freeShippingProgress)}%</span>
-              </div>
-              <div className="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-primary h-full transition-all duration-500 rounded-full"
-                  style={{ width: `${freeShippingProgress}%` }}
-                />
-              </div>
-            </div>
-          )}
+
 
           {/* Cart Items List */}
           <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
@@ -203,82 +155,12 @@ export default function CartDrawer({
 
           {/* Footer Calculations */}
           {cartItems.length > 0 && (
-            <div className="border-t border-outline-variant bg-surface-container px-6 py-5 space-y-4">
-              {/* Coupon Code Panel */}
-              <form onSubmit={handleApplyCoupon} className="flex gap-2">
-                <div className="relative flex-1">
-                  <input
-                    type="text"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    placeholder="Apply Coupon (WELCOME10)"
-                    className="w-full bg-white border border-outline-variant px-3 py-2 text-xs focus:outline-none focus:border-primary font-sans rounded-none uppercase"
-                    id="coupon-input"
-                  />
-                  <Tag className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-on-surface-variant" />
-                </div>
-                <button
-                  type="submit"
-                  className="bg-primary text-white text-xs px-4 py-2 font-semibold uppercase hover:opacity-90 transition-opacity rounded-none"
-                  id="apply-coupon-btn"
-                >
-                  Apply
-                </button>
-              </form>
-
-              {couponError && <p className="text-[11px] text-red-600 font-medium font-sans">{couponError}</p>}
-
-              {appliedDiscount && (
-                <div className="flex justify-between items-center bg-primary/5 border border-primary/20 px-3 py-1.5 text-xs text-primary font-sans">
-                  <span className="flex items-center gap-1 font-medium">
-                    <Tag className="w-3.5 h-3.5" /> Coupon Applied: <strong>{appliedDiscount.code}</strong>
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold">-{appliedDiscount.percent}%</span>
-                    <button
-                      type="button"
-                      onClick={() => setAppliedDiscount(null)}
-                      className="text-primary hover:text-red-600 font-bold text-sm"
-                    >
-                      ×
-                    </button>
-                  </div>
-                </div>
-              )}
-
+            <div className="border-t border-outline-variant bg-surface-container px-6 py-5">
               {/* Price list */}
-              <div className="space-y-1.5 text-xs text-on-surface-variant font-sans">
-                <div className="flex justify-between">
-                  <span>Cart Subtotal</span>
-                  <span className="text-on-surface font-semibold">₹{subtotal.toLocaleString('en-IN')}</span>
-                </div>
-                {discountAmount > 0 && (
-                  <div className="flex justify-between text-primary">
-                    <span>Discount ({appliedDiscount?.code})</span>
-                    <span className="font-semibold">-₹{discountAmount.toLocaleString('en-IN')}</span>
-                  </div>
-                )}
-                <div className="flex justify-between">
-                  <span>Shipping Fee</span>
-                  <span className="text-on-surface font-semibold">
-                    {shippingCost === 0 ? <span className="text-secondary font-bold">FREE</span> : `₹${shippingCost}`}
-                  </span>
-                </div>
-                <div className="flex justify-between text-base font-serif font-bold text-primary border-t border-outline-variant pt-2.5 mt-1.5">
-                  <span>Grand Total</span>
-                  <span>₹{finalTotal.toLocaleString('en-IN')}</span>
-                </div>
+              <div className="flex justify-between items-center text-base font-serif font-bold text-primary">
+                <span>Cart Subtotal</span>
+                <span>₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
-
-              {/* Action Button */}
-              <button
-                onClick={onCheckout}
-                className="w-full bg-primary hover:bg-primary-container text-white py-4 font-serif text-sm tracking-widest uppercase font-bold transition-colors flex items-center justify-center gap-2 rounded-none cursor-pointer"
-                id="checkout-btn"
-              >
-                <span>Proceed to Checkout</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
             </div>
           )}
         </motion.div>

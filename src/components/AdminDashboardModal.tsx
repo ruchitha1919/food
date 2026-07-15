@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, LayoutDashboard, Plus, Trash2, Tag, Percent, Image, BookOpen, AlertCircle, ShoppingBag, Eye } from 'lucide-react';
+import { X, LayoutDashboard, Plus, Trash2, Tag, Percent, Image, BookOpen, AlertCircle, ShoppingBag, Eye, EyeOff, Lock, LogOut } from 'lucide-react';
 import { Product } from '../types';
 
 interface AdminDashboardModalProps {
@@ -23,9 +23,36 @@ export default function AdminDashboardModal({
   onAddProduct,
   onDeleteProduct
 }: AdminDashboardModalProps) {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return sessionStorage.getItem('syamala_admin_authenticated') === 'true';
+  });
+  const [loginUsername, setLoginUsername] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
   const [activeTab, setActiveTab] = useState<'list' | 'add'>('list');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError('');
+
+    if (loginUsername === 'admin' && loginPassword === 'admin') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('syamala_admin_authenticated', 'true');
+      setLoginUsername('');
+      setLoginPassword('');
+    } else {
+      setAuthError('Invalid administrator credentials.');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('syamala_admin_authenticated');
+  };
 
   // Form Fields State
   const [name, setName] = useState('');
@@ -156,43 +183,137 @@ export default function AdminDashboardModal({
             <LayoutDashboard className="text-primary w-5 h-5" />
             <h2 className="font-serif text-xl font-bold text-primary">Syamala Administrator Portal</h2>
           </div>
-          <button
-            onClick={onClose}
-            className="text-on-surface-variant hover:text-primary p-1.5 hover:bg-outline-variant/20 rounded-full cursor-pointer"
-            id="close-admin-btn"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-3">
+            {isAuthenticated && (
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 text-xs text-red-600 hover:text-red-800 hover:bg-red-50 px-3 py-1.5 border border-red-200 rounded-none transition-all cursor-pointer font-sans font-bold uppercase tracking-wider"
+                title="Log Out"
+                id="admin-logout-btn"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Log Out</span>
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="text-on-surface-variant hover:text-primary p-1.5 hover:bg-outline-variant/20 rounded-full cursor-pointer"
+              id="close-admin-btn"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Tab controls */}
-        <div className="px-6 border-b border-outline-variant bg-surface-container-low flex gap-6">
-          <button
-            onClick={() => setActiveTab('list')}
-            className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 font-sans transition-all cursor-pointer ${
-              activeTab === 'list'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-on-surface-variant hover:text-primary'
-            }`}
-            id="admin-tab-list"
-          >
-            Orchard Inventory ({products.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('add')}
-            className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 font-sans transition-all cursor-pointer ${
-              activeTab === 'add'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-on-surface-variant hover:text-primary'
-            }`}
-            id="admin-tab-add"
-          >
-            Harvest New Product
-          </button>
-        </div>
+        {!isAuthenticated ? (
+          <div className="p-8 flex flex-col items-center justify-center bg-surface-container-low font-sans min-h-[420px] overflow-y-auto">
+            <div className="w-full max-w-md bg-white border border-outline-variant p-8 shadow-lg relative">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent-gold" />
+              
+              <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto text-primary mb-5 border border-primary/20">
+                <Lock className="w-6 h-6" />
+              </div>
 
-        {/* Body content */}
-        <div className="p-6 overflow-y-auto max-h-[60vh] space-y-6 font-sans">
+              <div className="text-center mb-6">
+                <h3 className="font-serif text-xl font-bold text-primary mb-1">Security Verification</h3>
+                <p className="text-xs text-on-surface-variant max-w-xs mx-auto leading-normal">
+                  Access to the Syamala inventory management and bulk ordering records requires administrator credentials.
+                </p>
+              </div>
+
+              {authError && (
+                <div className="bg-red-50 border-l-4 border-red-600 p-3 mb-5 flex gap-2 text-xs text-red-700 font-sans">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                  <span>{authError}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleLoginSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-1.5">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={loginUsername}
+                    onChange={(e) => setLoginUsername(e.target.value)}
+                    placeholder="Enter username"
+                    className="w-full border border-outline-variant/80 p-2.5 text-xs bg-white focus:outline-none focus:border-primary font-sans"
+                    id="admin-login-username"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-1.5">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      placeholder="Enter password"
+                      className="w-full border border-outline-variant/80 pl-2.5 pr-10 py-2.5 text-xs bg-white focus:outline-none focus:border-primary font-sans"
+                      id="admin-login-password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 hover:text-primary cursor-pointer p-0.5 animate-none"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-primary hover:bg-primary-container text-white py-3 text-xs font-bold uppercase tracking-widest font-sans cursor-pointer transition-colors mt-2"
+                  id="admin-login-submit"
+                >
+                  Authenticate
+                </button>
+              </form>
+
+              <div className="mt-6 pt-4 border-t border-outline-variant/40 text-center">
+                <span className="text-[10px] text-on-surface-variant/75">
+                  Hint: Use <code className="bg-surface-container px-1 py-0.5 rounded font-mono font-bold text-primary">admin</code> / <code className="bg-surface-container px-1 py-0.5 rounded font-mono font-bold text-primary">admin</code> for testing.
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Tab controls */}
+            <div className="px-6 border-b border-outline-variant bg-surface-container-low flex gap-6">
+              <button
+                onClick={() => setActiveTab('list')}
+                className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 font-sans transition-all cursor-pointer ${
+                  activeTab === 'list'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-on-surface-variant hover:text-primary'
+                }`}
+                id="admin-tab-list"
+              >
+                Orchard Inventory ({products.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('add')}
+                className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 font-sans transition-all cursor-pointer ${
+                  activeTab === 'add'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-on-surface-variant hover:text-primary'
+                }`}
+                id="admin-tab-add"
+              >
+                Harvest New Product
+              </button>
+            </div>
+
+            {/* Body content */}
+            <div className="p-6 overflow-y-auto max-h-[60vh] space-y-6 font-sans">
           {error && (
             <div className="bg-red-50 border-l-4 border-red-600 p-3 flex gap-2 text-xs text-red-700 font-sans">
               <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
@@ -518,7 +639,9 @@ export default function AdminDashboardModal({
               </div>
             </form>
           )}
-        </div>
+            </div>
+          </>
+        )}
       </motion.div>
     </div>
   );
