@@ -666,9 +666,7 @@ export default function App() {
                   Corporate Gifting
                 </button>
 
-                <button onClick={() => window.open('https://wa.me/919959334007', '_blank')} className="text-left hover:text-accent-gold transition-colors cursor-pointer">
-                  Connect With Scribe
-                </button>
+
                 <button onClick={() => setIsAdminOpen(true)} className="text-left hover:text-accent-gold transition-colors cursor-pointer font-bold text-accent-gold/90 flex items-center gap-1">
                   <LayoutDashboard className="w-3 h-3" />
                   <span>Admin Dashboard</span>
@@ -686,12 +684,7 @@ export default function App() {
                 Phone: +91 9959334007 | Email: sales@syamala.co.in
               </p>
 
-              <div className="flex gap-4.5 pt-3 text-white/80">
-                <span className="text-xs uppercase font-sans font-bold tracking-wider hover:text-accent-gold cursor-pointer transition-colors" onClick={() => window.open('https://wa.me/919959334007', '_blank')}>
-                  [ WHATSAPP SUPPORT ]
-                </span>
 
-              </div>
             </div>
           </div>
 
@@ -853,16 +846,7 @@ export default function App() {
                     <Sparkles className="w-4 h-4 text-secondary" />
                   </button>
 
-                  <button
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      window.open('https://wa.me/919959334007', '_blank');
-                    }}
-                    className="text-left py-1.5 border-b border-outline-variant/30 flex items-center justify-between"
-                  >
-                    <span>Scribe & Support</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+
                 </nav>
               </div>
 
