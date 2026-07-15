@@ -430,15 +430,9 @@ export default function GiftingCustomizer({
                 Continue
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleAddBoxToCart}
-                className="px-8 py-3.5 bg-primary hover:bg-primary-container text-white font-serif text-xs font-bold uppercase tracking-widest flex items-center gap-2"
-                id="gift-add-cart-btn"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Add Bespoke Box to Cart</span>
-              </button>
+              <div className="bg-primary/5 border border-primary/20 px-6 py-3 text-xs text-primary font-bold tracking-wider font-sans uppercase flex items-center justify-center">
+                Bespoke Selection Price: <strong>₹{calculateTotalPrice().toLocaleString('en-IN')}</strong>
+              </div>
             )}
           </div>
         </div>

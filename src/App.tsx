@@ -34,7 +34,6 @@ import CartDrawer from './components/CartDrawer';
 import CheckoutModal from './components/CheckoutModal';
 import GiftingCustomizer from './components/GiftingCustomizer';
 import SearchModal from './components/SearchModal';
-import AccountModal from './components/AccountModal';
 import AdminDashboardModal from './components/AdminDashboardModal';
 
 export default function App() {
@@ -46,7 +45,6 @@ export default function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isGiftingOpen, setIsGiftingOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
@@ -667,9 +665,7 @@ export default function App() {
                 <button onClick={() => setIsGiftingOpen(true)} className="text-left hover:text-accent-gold transition-colors cursor-pointer">
                   Corporate Gifting
                 </button>
-                <button onClick={() => setIsAccountOpen(true)} className="text-left hover:text-accent-gold transition-colors cursor-pointer">
-                  Tracking & Delivery
-                </button>
+
                 <button onClick={() => window.open('https://wa.me/919959334007', '_blank')} className="text-left hover:text-accent-gold transition-colors cursor-pointer">
                   Connect With Scribe
                 </button>
@@ -694,9 +690,7 @@ export default function App() {
                 <span className="text-xs uppercase font-sans font-bold tracking-wider hover:text-accent-gold cursor-pointer transition-colors" onClick={() => window.open('https://wa.me/919959334007', '_blank')}>
                   [ WHATSAPP SUPPORT ]
                 </span>
-                <span className="text-xs uppercase font-sans font-bold tracking-wider hover:text-accent-gold cursor-pointer transition-colors" onClick={() => setIsAccountOpen(true)}>
-                  [ ORDER HISTORY ]
-                </span>
+
               </div>
             </div>
           </div>
@@ -788,13 +782,7 @@ export default function App() {
           />
         )}
 
-        {/* Account Modal */}
-        {isAccountOpen && (
-          <AccountModal
-            isOpen={isAccountOpen}
-            onClose={() => setIsAccountOpen(false)}
-          />
-        )}
+
 
 
         {/* Product Details Modal */}
@@ -864,16 +852,7 @@ export default function App() {
                     <span>Custom Gifting Catalog</span>
                     <Sparkles className="w-4 h-4 text-secondary" />
                   </button>
-                  <button
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsAccountOpen(true);
-                    }}
-                    className="text-left py-1.5 border-b border-outline-variant/30 flex items-center justify-between"
-                  >
-                    <span>Order Tracking</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+
                   <button
                     onClick={() => {
                       setIsMenuOpen(false);
@@ -931,23 +910,13 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex gap-3 font-sans">
+              <div className="flex justify-center font-sans">
                 <button
                   onClick={() => setIsSuccessOpen(false)}
-                  className="flex-1 border border-outline-variant hover:bg-outline-variant/10 text-on-surface py-3 text-xs font-semibold uppercase tracking-wider"
+                  className="w-full bg-primary hover:bg-primary-container text-white py-3 text-xs font-semibold uppercase tracking-widest"
                   id="success-close-btn"
                 >
                   Continue Shopping
-                </button>
-                <button
-                  onClick={() => {
-                    setIsSuccessOpen(false);
-                    setIsAccountOpen(true);
-                  }}
-                  className="flex-1 bg-primary hover:bg-primary-container text-white py-3 text-xs font-semibold uppercase tracking-widest"
-                  id="success-track-btn"
-                >
-                  Track Delivery
                 </button>
               </div>
             </motion.div>
